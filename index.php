@@ -101,6 +101,7 @@ function delete($id)
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <title>xhprof性能分析管理</title>
 <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script src="xhprof_html/js/My97DatePicker/WdatePicker.js"></script>
 <style type="text/css">
 td,input{padding:0;margin:0}
 .tg  {border-collapse:collapse;border-spacing:0;}
@@ -150,8 +151,8 @@ $(document).ready(function() {
     <td class="tg-yw4l"><input type="text" size="10" name="name" value=""></td>
     <td class="tg-yw4l"><input type="text" size="40" name="url" value=""></td>
     <td class="tg-yw4l"><input type="text" size="5" name="frequency" value=""></td>
-    <td class="tg-yw4l"><input type="text" size="20" name="start_at" value=""></td>
-    <td class="tg-yw4l"><input type="text" size="20" name="end_at" value=""></td>
+    <td class="tg-yw4l"><input type="text" size="20" name="start_at" value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+    <td class="tg-yw4l"><input type="text" size="20" name="end_at" value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
     <td class="tg-yw4l"><input type="submit" value="submit"</td>
   </tr>
 </table>
@@ -178,8 +179,8 @@ foreach (get_records() as $row) {
   <td class="tg-yw4l"><input type="text" size="10" name="name" value="<?php echo $row['name']; ?>"></td>
   <td class="tg-yw4l"><input type="text" size="40" name="url" value="<?php echo $row['url']; ?>"></td>
     <td class="tg-yw4l"><input type="text" size="5" name="frequency" value="<?php echo $row['frequency']; ?>"></td>
-    <td class="tg-yw4l"><input type="text" size="20" name="start_at" value="<?php echo $row['start_at']; ?>"></td>
-    <td class="tg-yw4l"><input type="text" size="20" name="end_at" value="<?php echo $row['end_at']; ?>"></td>
+    <td class="tg-yw4l"><input type="text" size="20" name="start_at" value="<?php echo $row['start_at']; ?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+    <td class="tg-yw4l"><input type="text" size="20" name="end_at" value="<?php echo $row['end_at']; ?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
     <td class="tg-yw4l">
         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
         <input type="submit" value="编辑" name="edit">
