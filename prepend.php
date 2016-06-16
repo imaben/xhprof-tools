@@ -1,5 +1,5 @@
 <?php
-if (function_exists('php_sapi_name') && php_sapi_name() != 'cli') {
+if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_loaded('xhprof')) {
 
     if (!function_exists('getallheaders'))
     {
