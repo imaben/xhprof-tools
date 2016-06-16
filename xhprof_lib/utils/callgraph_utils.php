@@ -474,6 +474,7 @@ function xhprof_render_image($xhprof_runs_impl, $run_id, $type, $threshold,
   $content = xhprof_get_content_by_run($xhprof_runs_impl, $run_id, $type,
                                        $threshold,
                                        $func, $source, $critical_path);
+
   if (!$content) {
     print "Error: either we can not find profile data for run_id ".$run_id
           ." or the threshold ".$threshold." is too small or you do not"

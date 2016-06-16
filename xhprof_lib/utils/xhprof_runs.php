@@ -112,7 +112,7 @@ if (!class_exists('XHProfRuns_Default')) {
             $this->dir = $dir;
         }
 
-        public function get_run($run_id, $type, &$run_desc) {
+        public function get_orig_data($run_id, $type, &$run_desc) {
             $file_name = $this->file_name($run_id, $type);
 
             if (!file_exists($file_name)) {
@@ -124,6 +124,17 @@ if (!class_exists('XHProfRuns_Default')) {
             $contents = file_get_contents($file_name);
             $run_desc = "XHProf Run (Namespace=$type)";
             return unserialize($contents);
+        }
+
+        public function get_run($run_id, $type, &$run_desc) {
+            $orig_data = $this->get_orig_data($run_id, $type, $run_desc);
+            return $orig_data['data'];
+        }
+
+        public function get_runtime_vars($run_id, $type, &$run_desc) {
+            $orig_data = $this->get_orig_data($run_id, $type, $run_desc);
+            unset($orig_data['data']);
+            return $orig_data;
         }
 
         public function save_run($xhprof_data, $type, $run_id = null) {
