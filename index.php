@@ -192,5 +192,19 @@ foreach (get_records() as $row) {
 }
 ?>
 </table>
+<br/ >
+<br/ >
+<table class="tg" align="center" width="1000">
+  <tr>
+    <th class="tg-baqh">说明</th>
+  </tr>
+  <tr>
+    <td style="line-height:150%">
+        &nbsp;1、“名称”用来标识采样结果，不可为空;<br />
+        &nbsp;2、“URL请求地址”填写需要采样的URL，可模糊匹配，不可为空;<br />
+        &nbsp;3、“采样频率”取值范围为0.01-1，不可为空;
+    </td>
+  </tr>
+</table>
 </body>
 </html>
