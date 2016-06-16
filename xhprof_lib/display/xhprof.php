@@ -1344,6 +1344,35 @@ function profiler_diff_report($url_params,
                   $xhprof_data2);
 }
 
+function displayRuntimeVars($vars)
+{
+    echo <<<EOF
+<br /><br />
+<table border=1 cellpadding=2 cellspacing=1 width="90%" rules=rows bordercolor="#bdc7d8" align=center>
+    <tr bgcolor="#4876FF">
+        <td colspan="2" align=center>Runtime Data</td>
+    </tr>
+EOF;
+    foreach ($vars as $key => $val) {
+        echo '<tr bgcolor="#bdc7d8">';
+        echo '<td colspan="2" align=center>' . $key . '</td>';
+        echo '</tr>';
+        if (empty($val)) {
+        echo '<tr>';
+        echo '<td colspan="2" align=center>None</td>';
+        echo '</tr>';
+        continue;
+        }
+        $i = 1;
+        foreach ($val as $k => $v) {
+            echo '<tr ' . ($i++ % 2 == 0 ? '' : 'bgcolor="#e5e5e5"' ).' align=right>';
+            echo '<td align=left>' . $k . '</td>';
+            echo '<td class="vwbar">' . $v . '</td></tr>';
+        }
+    }
+    echo "</table>";
+}
+
 
 /**
  * Generate a XHProf Display View given the various URL parameters
@@ -1391,10 +1420,18 @@ function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
     //
     $runs_array = explode(",", $run);
 
+    $xhprof_runtime_data = null;
     if (count($runs_array) == 1) {
-      $xhprof_data = $xhprof_runs_impl->get_run($runs_array[0],
-                                                $source,
-                                                $description);
+        $xhprof_data = $xhprof_runs_impl->get_run(
+            $runs_array[0],
+            $source,
+            $description
+        );
+        $xhprof_runtime_data = $xhprof_runs_impl->get_runtime_vars(
+            $runs_array[0],
+            $source,
+            $description
+        );
     } else {
       if (!empty($wts)) {
         $wts_array  = explode(",", $wts);
@@ -1414,6 +1451,10 @@ function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
                                $symbol,
                                $sort,
                                $run);
+
+    if ($xhprof_runtime_data) {
+        displayRuntimeVars($xhprof_runtime_data);
+    }
 
   } else if ($run1 && $run2) {                  // diff report for two runs
 
