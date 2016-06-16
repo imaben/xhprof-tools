@@ -17,6 +17,10 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli') {
         }
     }
 
+    if (!function_exists('fastcgi_finish_request')) {
+        function fastcgi_finish_request() {};
+    }
+
     $data_file = __DIR__ . DIRECTORY_SEPARATOR . 'data.bin';
     if (file_exists($data_file) &&
         false !== ($data = file_get_contents($data_file)) &&
@@ -24,13 +28,12 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli') {
         is_array($records)
     ) {
         $cfg = [];
-        $request = explode('?', $_SERVER['REQUEST_URI']);
-        $path = $request[0];
+        $request_url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         foreach ($records as $record) {
             if (!isset($record['url'])) {
                 continue;
             }
-            if (strpos($path, $record['url'])) {
+            if (false !== strpos($request_url, $record['url'])) {
                 $cfg = $record;
                 break;
             }
@@ -46,23 +49,25 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli') {
                 if ($cfg['frequency'] < 0.01) {
                     $cfg['frequency'] = 0.01;
                 }
-                $frequency *= 100;
-                if ((mt_rand(0, 100) <= $frequency) {
+
+                $frequency = $cfg['frequency'] * 100;
+                if (mt_rand(0, 100) <= $frequency) {
                     $GLOBALS['xhprof_vars'] = [
-                        'get' => $_GET,
-                        'post' => $_POST,
-                        'cookie' => $_COOKIE,
+                        'get'     => $_GET,
+                        'post'    => $_POST,
+                        'cookie'  => $_COOKIE,
                         'headers' => getallheaders()
                     ];
                     xhprof_enable();
-                    $app_name = array_search($path, $api_list);
-                    if (false === $app_name) {
-                        $app_name = 'unknow';
-                    }
+                    $app_name = $cfg['name'];
                     register_shutdown_function(function() use ($app_name) {
-                        $data = xhprof_disable();
+                        fastcgi_finish_request();
+                        !defined('DS') && define('DS', DIRECTORY_SEPARATOR);
+                        include_once __DIR__ . DS . 'xhprof_lib'. DS . 'utils' . DS . 'xhprof_runs.php';
+                        $GLOBALS['xhprof_vars']['data'] = xhprof_disable();
+                        file_put_contents("/tmp/bbb", 123);
                         $runs = new XHProfRuns_Default();
-                        $runs->save_run($data, $app_name);
+                        $runs->save_run($GLOBALS['xhprof_vars'], $app_name);
                     });
                 }
             }
