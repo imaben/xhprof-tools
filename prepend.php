@@ -63,9 +63,11 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli') {
                     register_shutdown_function(function() use ($app_name) {
                         fastcgi_finish_request();
                         !defined('DS') && define('DS', DIRECTORY_SEPARATOR);
-                        include_once __DIR__ . DS . 'xhprof_lib'. DS . 'utils' . DS . 'xhprof_runs.php';
+                        $inc_file = __DIR__ . DS . 'xhprof_lib'. DS . 'utils' . DS . 'xhprof_runs.php';
+                        if (!file_exists($inc_file)) {
+                            return;
+                        }
                         $GLOBALS['xhprof_vars']['data'] = xhprof_disable();
-                        file_put_contents("/tmp/bbb", 123);
                         $runs = new XHProfRuns_Default();
                         $runs->save_run($GLOBALS['xhprof_vars'], $app_name);
                     });
