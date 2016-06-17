@@ -83,7 +83,7 @@ $vgbar = ' class="vgbar"';
 $xhprof_runs_impl = new XHProfRuns_Default();
 
 displayXHProfReport($xhprof_runs_impl, $params, $source, $run, $wts,
-                    $symbol, $sort, $run1, $run2);
+                    $symbol, $sort, $run1, $run2, isset($_GET['name']) ? $_GET['name'] : null);
 
 
 echo "</body>";

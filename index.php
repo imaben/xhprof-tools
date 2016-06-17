@@ -177,14 +177,15 @@ foreach (get_records() as $row) {
 <form action="?action=op" method="post" id="op_form">
   <tr>
   <td class="tg-yw4l"><input type="text" size="10" name="name" value="<?php echo $row['name']; ?>"></td>
-  <td class="tg-yw4l"><input type="text" size="40" name="url" value="<?php echo $row['url']; ?>"></td>
+  <td class="tg-yw4l"><input type="text" size="30" name="url" value="<?php echo $row['url']; ?>"></td>
     <td class="tg-yw4l"><input type="text" size="5" name="frequency" value="<?php echo $row['frequency']; ?>"></td>
-    <td class="tg-yw4l"><input type="text" size="20" name="start_at" value="<?php echo $row['start_at']; ?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
-    <td class="tg-yw4l"><input type="text" size="20" name="end_at" value="<?php echo $row['end_at']; ?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+    <td class="tg-yw4l"><input type="text" size="19" name="start_at" value="<?php echo $row['start_at']; ?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+    <td class="tg-yw4l"><input type="text" size="19" name="end_at" value="<?php echo $row['end_at']; ?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
     <td class="tg-yw4l">
         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
         <input type="submit" value="编辑" name="edit">
         <input type="submit" value="删除" name="delete" onclick="return confirm('确定要删除吗？')">
+        <input type="button" value="结果查看" onclick="window.open('xhprof_html/index.php?name=<?php echo $row['name'];?>')">
     </td>
   </tr>
 </form>
@@ -202,7 +203,8 @@ foreach (get_records() as $row) {
     <td style="line-height:150%">
         &nbsp;1、“名称”用来标识采样结果，建议英文，不可为空;<br />
         &nbsp;2、“URL请求地址”填写需要采样的URL，可模糊匹配，不可为空;<br />
-        &nbsp;3、“采样频率”取值范围为0.01-1，不可为空;
+        &nbsp;3、“采样频率”取值范围为0.01-1，不可为空;<br />
+        &nbsp;4、<a href="xhprof_html/index.php" target="_blank">查看所有结果</a>
     </td>
   </tr>
 </table>

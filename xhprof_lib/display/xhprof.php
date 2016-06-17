@@ -1407,9 +1407,11 @@ EOF;
  *
  * @param string  $run2         New run id (for diff reports)
  *
+ * @param string  $name
+ *
  */
 function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
-                             $run, $wts, $symbol, $sort, $run1, $run2) {
+                             $run, $wts, $symbol, $sort, $run1, $run2, $name = null) {
 
   if ($run) {                              // specific run to display?
 
@@ -1439,7 +1441,8 @@ function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
         $wts_array = null;
       }
       $data = xhprof_aggregate_runs($xhprof_runs_impl,
-                                    $runs_array, $wts_array, $source, false);
+          $runs_array, $wts_array, $source, false);
+
       $xhprof_data = $data['raw'];
       $description = $data['description'];
     }
@@ -1474,7 +1477,7 @@ function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
   } else {
     echo "No XHProf runs specified in the URL.";
     if (method_exists($xhprof_runs_impl, 'list_runs')) {
-      $xhprof_runs_impl->list_runs();
+      $xhprof_runs_impl->list_runs($name);
     }
   }
 }

@@ -161,10 +161,11 @@ if (!class_exists('XHProfRuns_Default')) {
             return $run_id;
         }
 
-        function list_runs() {
+        function list_runs($name = null) {
             if (is_dir($this->dir)) {
                 echo "<hr/>Existing runs:\n<ul>\n";
-                $files = glob("{$this->dir}/*.{$this->suffix}");
+                $pattern = sprintf("%s/*.%s%s", $this->dir, ($name ? $name . '.' : ''), $this->suffix);
+                $files = glob($pattern);
                 usort($files, create_function('$a,$b', 'return filemtime($b) - filemtime($a);'));
                 foreach ($files as $file) {
                     list($run,$source) = explode('.', basename($file));
