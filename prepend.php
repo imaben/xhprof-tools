@@ -21,6 +21,21 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
         function fastcgi_finish_request() {};
     }
 
+    if (!function_exists('__xhprof_url_is_hit')) {
+        function __xhprof_url_is_hit($pattern, $value)
+        {
+            if ($pattern == $value) {
+                return true;
+            }
+
+            $pattern = preg_quote($pattern, '#');
+            $pattern = str_replace('\*', '.*', $pattern);
+            $pattern = str_replace('/', '\/', $pattern);
+            $pattern = '/' . $pattern . '/i';
+            return (bool) preg_match($pattern, $value);
+        }
+    }
+
     $data_file = __DIR__ . DIRECTORY_SEPARATOR . 'data.bin';
     if (file_exists($data_file) &&
         false !== ($data = file_get_contents($data_file)) &&
@@ -33,7 +48,7 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
             if (!isset($record['url'])) {
                 continue;
             }
-            if (false !== strpos($request_url, $record['url'])) {
+            if (__xhprof_url_is_hit($record['url'], $request_url)) {
                 $cfg = $record;
                 break;
             }

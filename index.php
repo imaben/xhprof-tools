@@ -204,7 +204,8 @@ foreach (get_records() as $row) {
         &nbsp;1、“名称”用来标识采样结果，建议英文，不可为空;<br />
         &nbsp;2、“URL请求地址”填写需要采样的URL，可模糊匹配，不可为空;<br />
         &nbsp;3、“采样频率”取值范围为0.01-1，不可为空;<br />
-        &nbsp;4、<a href="xhprof_html/index.php" target="_blank">查看所有结果</a>
+        &nbsp;4、支持“*”通配符匹配;<br />
+        &nbsp;5、<a href="xhprof_html/index.php" target="_blank">查看所有结果</a>
     </td>
   </tr>
 </table>
