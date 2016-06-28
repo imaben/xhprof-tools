@@ -71,7 +71,8 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
                         'get'     => $_GET,
                         'post'    => $_POST,
                         'cookie'  => $_COOKIE,
-                        'headers' => getallheaders()
+                        'headers' => getallheaders(),
+                        'raw'     => file_get_contents("php://input")
                     ];
                     xhprof_enable();
                     $app_name = $cfg['name'];

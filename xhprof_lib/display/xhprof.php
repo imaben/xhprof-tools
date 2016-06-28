@@ -1358,16 +1358,22 @@ EOF;
         echo '<td colspan="2" align=center>' . $key . '</td>';
         echo '</tr>';
         if (empty($val)) {
-        echo '<tr>';
-        echo '<td colspan="2" align=center>None</td>';
-        echo '</tr>';
-        continue;
+            echo '<tr>';
+            echo '<td colspan="2" align=center>None</td>';
+            echo '</tr>';
+            continue;
         }
         $i = 1;
-        foreach ($val as $k => $v) {
-            echo '<tr ' . ($i++ % 2 == 0 ? '' : 'bgcolor="#e5e5e5"' ).' align=right>';
-            echo '<td align=left>' . $k . '</td>';
-            echo '<td class="vwbar">' . $v . '</td></tr>';
+        if (is_array($val)) {
+            foreach ($val as $k => $v) {
+                echo '<tr ' . ($i++ % 2 == 0 ? '' : 'bgcolor="#e5e5e5"' ).' align=right>';
+                echo '<td align=left>' . $k . '</td>';
+                echo '<td class="vwbar">' . $v . '</td></tr>';
+            }
+        } else {
+            echo '<tr>';
+            echo '<td colspan="2" align=center>'.$val.'</td>';
+            echo '</tr>';
         }
     }
     echo "</table>";
