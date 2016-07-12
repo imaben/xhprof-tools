@@ -28,10 +28,6 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
                 return true;
             }
 
-            if (strpos($value, $pattern) !== false) {
-                return true;
-            }
-
             $pattern = preg_quote($pattern, '#');
             $pattern = str_replace('*', '.*', $pattern);
             $pattern = str_replace('/', '\/', $pattern);
