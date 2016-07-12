@@ -58,7 +58,7 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
             }
         }
 
-        if (isset($cfg['name']) && isset($cfg['frequency']) && isset($cfg['start_at']) || isset($cfg['start_at']) || isset($cfg['end_at'])) {
+        if (isset($cfg['name']) && isset($cfg['frequency']) && isset($cfg['start_at']) && isset($cfg['end_at'])) {
             $now = time();
             if (strtotime($cfg['start_at']) < $now && $now < strtotime($cfg['end_at'])) {
                 // random capture
