@@ -29,6 +29,7 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
             }
 
             $pattern = preg_quote($pattern, '#');
+            $pattern = str_replace('\*', '*', $pattern);
             $pattern = str_replace('*', '.*', $pattern);
             $pattern = str_replace('/', '\/', $pattern);
             $pattern = '/' . $pattern . '/i';
