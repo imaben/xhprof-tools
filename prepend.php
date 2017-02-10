@@ -5,7 +5,7 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
     {
         function getallheaders()
         {
-            $headers = '';
+            $headers = [];
             foreach ($_SERVER as $name => $value)
             {
                 if (substr($name, 0, 5) == 'HTTP_')
