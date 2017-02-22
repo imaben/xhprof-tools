@@ -1,9 +1,9 @@
 <?php
 if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_loaded('xhprof')) {
 
-    if (!function_exists('getallheaders'))
+    if (!function_exists('__xhprof_getallheaders'))
     {
-        function getallheaders()
+        function __xhprof_getallheaders()
         {
             $headers = [];
             foreach ($_SERVER as $name => $value)
@@ -24,15 +24,6 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
     if (!function_exists('__xhprof_url_is_hit')) {
         function __xhprof_url_is_hit($pattern, $value)
         {
-            if ($pattern == $value) {
-                return true;
-            }
-
-            $pattern = preg_quote($pattern, '#');
-            $pattern = str_replace('\*', '*', $pattern);
-            $pattern = str_replace('*', '.*', $pattern);
-            $pattern = str_replace('/', '\/', $pattern);
-            $pattern = '/' . $pattern . '/i';
             return (bool) preg_match($pattern, $value);
         }
     }
@@ -72,18 +63,21 @@ if (function_exists('php_sapi_name') && php_sapi_name() != 'cli' && extension_lo
                         'get'     => $_GET,
                         'post'    => $_POST,
                         'cookie'  => $_COOKIE,
-                        'headers' => getallheaders(),
+                        'headers' => __xhprof_getallheaders(),
                         'raw'     => file_get_contents("php://input")
                     ];
                     xhprof_enable();
                     $app_name = $cfg['name'];
                     register_shutdown_function(function() use ($app_name) {
-                        fastcgi_finish_request();
+                        if (function_exists('fastcgi_finish_request')) {
+                            fastcgi_finish_request();
+                        }
                         !defined('DS') && define('DS', DIRECTORY_SEPARATOR);
                         $inc_file = __DIR__ . DS . 'xhprof_lib'. DS . 'utils' . DS . 'xhprof_runs.php';
                         if (!file_exists($inc_file)) {
                             return;
                         }
+                        require $inc_file;
                         $GLOBALS['xhprof_vars']['data'] = xhprof_disable();
                         $runs = new XHProfRuns_Default();
                         $runs->save_run($GLOBALS['xhprof_vars'], $app_name);

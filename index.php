@@ -13,13 +13,20 @@ if ($action == 'add') {
     if (empty($name) || empty($url) || empty($frequency) || empty($start_at) || empty($end_at)) {
         show_notice('参数不合法');
     }
+
+    // test regex
+    $pattern = format_pattern($url);
+    if (false === preg_match($pattern, '', $matches)) {
+        show_notice('url(正则)格式错误');
+    }
+
     if ($frequency > 1) {
         $frequency = 1;
     }
     if ($frequency < 0.01) {
         $frequency = 0.01;
     }
-    insert($name, $url, $frequency, $start_at, $end_at);
+    insert($name, $pattern, $frequency, $start_at, $end_at);
 
 } elseif ($action == 'op') {
     if (isset($_POST['edit'])) { /* edit */
@@ -29,12 +36,33 @@ if ($action == 'add') {
         if ($_POST['frequency'] < 0.01) {
             $_POST['frequency'] = 0.01;
         }
+
+        // test regex
+        $pattern = format_pattern($_POST['url']);
+        if (false === preg_match($pattern, '', $matches)) {
+            show_notice('url(正则)格式错误');
+        }
+
         update($_POST['id'], $_POST['name'], $_POST['url'], $_POST['frequency'], $_POST['start_at'], $_POST['end_at']);
     } elseif (isset($_POST['delete'])) { /* delete */
         delete($_POST['id']);
     } else {
         show_notice('无效的参数');
     }
+}
+
+function format_pattern($pattern)
+{
+    if (empty($pattern)) {
+        return $pattern;
+    }
+    if ($pattern[0] != '@') {
+        $pattern = '@' . $pattern;
+    }
+    if ($pattern[strlen($pattern)-1] != '@') {
+        $pattern .= '@';
+    }
+    return $pattern;
 }
 
 function show_notice($msg, $url = 'index.php')
@@ -141,7 +169,7 @@ $(document).ready(function() {
   </tr>
   <tr>
     <td class="tg-yw4l">名称</td>
-    <td class="tg-yw4l">URL请求地址</td>
+    <td class="tg-yw4l">URL请求地址(支持正则)</td>
     <td class="tg-yw4l">采样频率</td>
     <td class="tg-yw4l">采样起始时间</td>
     <td class="tg-yw4l">采样结束时间</td>
@@ -165,7 +193,7 @@ $(document).ready(function() {
   </tr>
   <tr>
     <td class="tg-yw4l">名称</td>
-    <td class="tg-yw4l">URL请求地址</td>
+    <td class="tg-yw4l">URL请求地址(支持正则)</td>
     <td class="tg-yw4l">采样频率</td>
     <td class="tg-yw4l">采样起始时间</td>
     <td class="tg-yw4l">采样结束时间</td>
