@@ -482,14 +482,14 @@ function profiler_report ($url_params,
                                                            'symbol'),
                                         'all');
 
-  $top_link_query_string = "$base_path/?" . http_build_query($base_url_params);
+  $top_link_query_string = "$base_path/index.php?" . http_build_query($base_url_params);
 
   if ($diff_mode) {
     $diff_text = "Diff";
     $base_url_params = xhprof_array_unset($base_url_params, 'run1');
     $base_url_params = xhprof_array_unset($base_url_params, 'run2');
     $run1_link = xhprof_render_link('View Run #' . $run1,
-                           "$base_path/?" .
+                           "$base_path/index.php?" .
                            http_build_query(xhprof_array_set($base_url_params,
                                                       'run',
                                                       $run1)));
@@ -497,7 +497,7 @@ function profiler_report ($url_params,
                         $run2, $run2_desc);
 
     $run2_link = xhprof_render_link('View Run #' . $run2,
-                                    "$base_path/?" .
+                                    "$base_path/index.php?" .
                         http_build_query(xhprof_array_set($base_url_params,
                                                           'run',
                                                           $run2)));
@@ -519,7 +519,7 @@ function profiler_report ($url_params,
     $links [] = $run1_link;
     $links [] = $run2_link;
     $links [] = xhprof_render_link('Invert ' . $diff_text . ' Report',
-                           "$base_path/?".
+                           "$base_path/index.php?".
                            http_build_query($inverted_params));
   }
 
@@ -672,7 +672,7 @@ function print_function_info($url_params, $info, $sort, $run1, $run2) {
     print('<tr bgcolor="#e5e5e5">');
   }
 
-  $href = "$base_path/?" .
+  $href = "$base_path/index.php?" .
            http_build_query(xhprof_array_set($url_params,
                                              'symbol', $info["fn"]));
 
@@ -725,7 +725,7 @@ function print_flat_data($url_params, $title, $flat_data, $sort, $run1, $run2, $
     $display_link = "";
   } else {
     $display_link = xhprof_render_link(" [ <b class=bubble>display all </b>]",
-                                       "$base_path/?" .
+                                       "$base_path/index.php?" .
                                        http_build_query(xhprof_array_set($url_params,
                                                                          'all', 1)));
   }
@@ -739,7 +739,7 @@ function print_flat_data($url_params, $title, $flat_data, $sort, $run1, $run2, $
   foreach ($stats as $stat) {
     $desc = stat_description($stat);
     if (array_key_exists($stat, $sortable_columns)) {
-      $href = "$base_path/?"
+      $href = "$base_path/index.php?"
               . http_build_query(xhprof_array_set($url_params, 'sort', $stat));
       $header = xhprof_render_link($desc, $href);
     } else {
@@ -799,10 +799,10 @@ function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
     $base_url_params = xhprof_array_unset(xhprof_array_unset($url_params,
                                                              'run1'),
                                           'run2');
-    $href1 = "$base_path/?" .
+    $href1 = "$base_path/index.php?" .
       http_build_query(xhprof_array_set($base_url_params,
                                         'run', $run1));
-    $href2 = "$base_path/?" .
+    $href2 = "$base_path/index.php?" .
       http_build_query(xhprof_array_set($base_url_params,
                                         'run', $run2));
 
@@ -980,7 +980,7 @@ function print_pc_array($url_params, $results, $base_ct, $base_info, $parent,
 
   $odd_even = 0;
   foreach ($results as $info) {
-    $href = "$base_path/?" .
+    $href = "$base_path/index.php?" .
       http_build_query(xhprof_array_set($url_params,
                                         'symbol', $info["fn"]));
 
@@ -1157,7 +1157,7 @@ function symbol_report($url_params,
     $desc = stat_description($stat);
     if (array_key_exists($stat, $sortable_columns)) {
 
-      $href = "$base_path/?" .
+      $href = "$base_path/index.php?" .
         http_build_query(xhprof_array_set($url_params,
                                           'sort', $stat));
       $header = xhprof_render_link($desc, $href);
