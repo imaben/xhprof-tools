@@ -98,6 +98,7 @@ if (!class_exists('XHProfRuns_Default')) {
 
             if (empty($dir)) {
                 $dir = ini_get("xhprof.output_dir");
+                $dir = '/home/maben/';
                 if (empty($dir)) {
 
                     $dir = sys_get_temp_dir();

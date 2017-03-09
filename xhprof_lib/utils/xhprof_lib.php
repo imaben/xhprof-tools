@@ -471,6 +471,7 @@ function xhprof_compute_flat_info($raw_data, &$overall_totals) {
   $symbol_tab = xhprof_compute_inclusive_times($raw_data);
 
   /* total metric value is the metric value for "main()" */
+
   foreach ($metrics as $metric) {
     $overall_totals[$metric] = $symbol_tab["main()"][$metric];
   }

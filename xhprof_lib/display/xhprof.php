@@ -459,6 +459,7 @@ function profiler_report ($url_params,
   // the report(s) to just stuff that is relevant to this function.
   // That way compute_flat_info()/compute_diff() etc. do not have
   // to needlessly work hard on churning irrelevant data.
+
   if (!empty($rep_symbol)) {
     $run1_data = xhprof_trim_run($run1_data, array($rep_symbol));
     if ($diff_mode) {
@@ -529,7 +530,17 @@ function profiler_report ($url_params,
 
   echo xhprof_render_actions($links);
 
-
+  $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+  $hidden = '';
+  foreach ($_GET as $k => $v) {
+      if ($k == 'filter') continue;
+      $hidden .= '<input type="hidden" name="'.$k.'" value="'.$v.'"/>';
+  }
+  echo "<form method=\"GET\" action=\"$base_path/index.php\">" .
+      'exlude prefix:' .
+      '<input type="text" name="filter" value="'.$filter.'"/>&nbsp;' . $hidden.
+      '<input type="submit" value="submit" />' .
+      '</form>';
   echo
     '<dl class=phprof_report_info>' .
     '  <dt>' . $diff_text . ' Report</dt>' .
@@ -564,8 +575,8 @@ function profiler_report ($url_params,
                     $sort, $rep_symbol, $run1);
     }
   } else {
-    /* flat top-level report of all functions */
-    full_report($url_params, $symbol_tab, $sort, $run1, $run2);
+      /* flat top-level report of all functions */
+    full_report($url_params, $symbol_tab, $sort, $run1, $run2, explode('|', $filter));
   }
 }
 
@@ -778,7 +789,7 @@ function print_flat_data($url_params, $title, $flat_data, $sort, $run1, $run2, $
  *
  * @author Kannan
  */
-function full_report($url_params, $symbol_tab, $sort, $run1, $run2) {
+function full_report($url_params, $symbol_tab, $sort, $run1, $run2, $exlude = []) {
   global $vwbar;
   global $vbar;
   global $totals;
@@ -1417,7 +1428,7 @@ EOF;
  *
  */
 function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
-                             $run, $wts, $symbol, $sort, $run1, $run2, $name = null) {
+                             $run, $wts, $symbol, $sort, $run1, $run2, $name = null, $filter = []) {
 
   if ($run) {                              // specific run to display?
 
@@ -1452,7 +1463,19 @@ function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
       $xhprof_data = $data['raw'];
       $description = $data['description'];
     }
-
+    //var_dump($xhprof_data);exit;
+    if ($filter) {
+        foreach ($xhprof_data as $key => $val) {
+            $t = explode('==>', $key);
+            foreach ($filter as $f) {
+                if (strncasecmp($t[0], $f, strlen($f)) == 0 ||
+                    (isset($t[1]) && strncasecmp($t[1], $f, strlen($f)) == 0)
+                ) {
+                    unset($xhprof_data[$key]);
+                }
+            }
+        }
+    }
 
     profiler_single_run_report($url_params,
                                $xhprof_data,
