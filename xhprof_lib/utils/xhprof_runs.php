@@ -98,7 +98,6 @@ if (!class_exists('XHProfRuns_Default')) {
 
             if (empty($dir)) {
                 $dir = ini_get("xhprof.output_dir");
-                $dir = '/home/maben/';
                 if (empty($dir)) {
 
                     $dir = sys_get_temp_dir();
@@ -124,7 +123,23 @@ if (!class_exists('XHProfRuns_Default')) {
 
             $contents = file_get_contents($file_name);
             $run_desc = "XHProf Run (Namespace=$type)";
-            return unserialize($contents);
+            $data = unserialize($contents);
+            $filter = !empty($_GET['filter']) ? explode('|', $_GET['filter']) : [];
+
+            if ($filter) {
+                foreach ($data['data'] as $key => $val) {
+                    $t = explode('==>', $key);
+                    foreach ($filter as $f) {
+                        if (strncasecmp($t[0], $f, strlen($f)) == 0 ||
+                            (isset($t[1]) && strncasecmp($t[1], $f, strlen($f)) == 0)
+                        ) {
+                            unset($data['data'][$key]);
+                        }
+                    }
+                }
+            }
+            return $data;
+
         }
 
         public function get_run($run_id, $type, &$run_desc) {

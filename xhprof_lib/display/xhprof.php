@@ -1428,7 +1428,7 @@ EOF;
  *
  */
 function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
-                             $run, $wts, $symbol, $sort, $run1, $run2, $name = null, $filter = []) {
+                             $run, $wts, $symbol, $sort, $run1, $run2, $name = null) {
 
   if ($run) {                              // specific run to display?
 
@@ -1464,18 +1464,6 @@ function displayXHProfReport($xhprof_runs_impl, $url_params, $source,
       $description = $data['description'];
     }
     //var_dump($xhprof_data);exit;
-    if ($filter) {
-        foreach ($xhprof_data as $key => $val) {
-            $t = explode('==>', $key);
-            foreach ($filter as $f) {
-                if (strncasecmp($t[0], $f, strlen($f)) == 0 ||
-                    (isset($t[1]) && strncasecmp($t[1], $f, strlen($f)) == 0)
-                ) {
-                    unset($xhprof_data[$key]);
-                }
-            }
-        }
-    }
 
     profiler_single_run_report($url_params,
                                $xhprof_data,

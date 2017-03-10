@@ -62,7 +62,8 @@ $params = array(// run id param
                 'run1' => array(XHPROF_STRING_PARAM, ''),
 
                 // second run in diff mode.
-                'run2' => array(XHPROF_STRING_PARAM, '')
+                'run2' => array(XHPROF_STRING_PARAM, ''),
+                'filter'     => array(XHPROF_STRING_PARAM, '')
                 );
 
 // pull values of these params, and create named globals for each param
