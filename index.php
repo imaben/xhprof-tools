@@ -211,7 +211,7 @@ foreach (get_records() as $row) {
     <td class="tg-yw4l"><input type="text" size="19" name="end_at" value="<?php echo $row['end_at']; ?>" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
     <td class="tg-yw4l">
         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-        <input type="submit" value="编辑" name="edit">
+        <input type="submit" value="修改" name="edit">
         <input type="submit" value="删除" name="delete" onclick="return confirm('确定要删除吗？')">
         <input type="button" value="结果查看" onclick="window.open('xhprof_html/index.php?name=<?php echo $row['name'];?>')">
     </td>
