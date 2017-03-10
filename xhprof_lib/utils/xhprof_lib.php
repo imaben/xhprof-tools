@@ -465,7 +465,7 @@ function xhprof_compute_flat_info($raw_data, &$overall_totals) {
                            "mu" => 0,
                            "pmu" => 0,
                            "samples" => 0
-                           );
+                       );
 
   // compute inclusive times for each function
   $symbol_tab = xhprof_compute_inclusive_times($raw_data);

@@ -537,7 +537,7 @@ function profiler_report ($url_params,
       $hidden .= '<input type="hidden" name="'.$k.'" value="'.$v.'"/>';
   }
   echo "<form method=\"GET\" action=\"$base_path/index.php\">" .
-      'exlude prefix:' .
+      'exlude prefix(delimiter:"|"):' .
       '<input type="text" name="filter" value="'.$filter.'"/>&nbsp;' . $hidden.
       '<input type="submit" value="submit" />' .
       '</form>';
