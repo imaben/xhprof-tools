@@ -1379,7 +1379,7 @@ EOF;
             foreach ($val as $k => $v) {
                 echo '<tr ' . ($i++ % 2 == 0 ? '' : 'bgcolor="#e5e5e5"' ).' align=right>';
                 echo '<td align=left>' . $k . '</td>';
-                echo '<td class="vwbar">' . $v . '</td></tr>';
+                echo '<td class="vwbar">' . (is_array($v) ? json_encode($v, JSON_UNESCAPED_UNICODE) : $v) . '</td></tr>';
             }
         } else {
             echo '<tr>';
